@@ -129,7 +129,8 @@ impl<T: Clone + Transport> Executor<TransactionRequest> for TransactionSender<T>
         if action.nonce.is_none() {
             let nonce = match self
                 .provider
-                .get_transaction_count(account, BlockId::latest())
+                .get_transaction_count(account)
+                .block_id(BlockId::latest())
                 .await
             {
                 Ok(v) => v,
