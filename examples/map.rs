@@ -6,8 +6,8 @@ use alloy::primitives::B256;
 use alloy::providers::Provider;
 use alloy::rpc::types::eth::{Block, Transaction};
 use alloy::{providers::ProviderBuilder, rpc::client::WsConnect};
-use burberry::collector::BlockCollector;
-use burberry::{
+use basepure::collector::BlockCollector;
+use basepure::{
     collector::MempoolCollector, map_collector, map_executor, submit_action, ActionSubmitter,
     Engine, Executor, Strategy,
 };

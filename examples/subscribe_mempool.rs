@@ -2,7 +2,7 @@ use std::sync::Arc;
 use std::time::Duration;
 
 use alloy::{providers::ProviderBuilder, rpc::client::WsConnect};
-use burberry::{collector::MempoolCollector, Collector};
+use basepure::{collector::MempoolCollector, Collector};
 use futures::StreamExt;
 
 #[tokio::main]
