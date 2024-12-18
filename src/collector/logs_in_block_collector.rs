@@ -4,7 +4,10 @@ use alloy::{
     primitives::B256,
     providers::Provider,
     pubsub::PubSubFrontend,
-    rpc::types::eth::{Block, Filter, Log},
+    rpc::types::{
+        eth::{Block, Filter, Log},
+        Header,
+    },
 };
 use async_trait::async_trait;
 use futures::StreamExt;
@@ -38,23 +41,20 @@ impl LogsInBlockCollector {
 }
 
 #[async_trait]
-impl Collector<(Block, Vec<Log>)> for LogsInBlockCollector {
-    async fn get_event_stream(&self) -> eyre::Result<CollectorStream<'_, (Block, Vec<Log>)>> {
+impl Collector<(Header, Vec<Log>)> for LogsInBlockCollector {
+    async fn get_event_stream(&self) -> eyre::Result<CollectorStream<'_, (Header, Vec<Log>)>> {
         let mut stream = self.provider.subscribe_blocks().await?.into_stream();
 
         let stream = async_stream::stream! {
-            while let Some(block) = stream.next().await {
-                let block_hash = match block.header.hash {
-                    Some(block_hash) => block_hash,
-                    None => continue,
-                };
+            while let Some(header) = stream.next().await {
+                let block_hash = header.hash;
 
                 let logs = match self.block_to_logs(block_hash).await {
                     Some(logs) => logs,
                     None => continue,
                 };
 
-                yield (block, logs);
+                yield (header, logs);
             }
         };
 

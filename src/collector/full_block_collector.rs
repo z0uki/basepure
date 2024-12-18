@@ -1,7 +1,11 @@
 use std::sync::Arc;
 use std::time::Duration;
 
-use alloy::{providers::Provider, pubsub::PubSubFrontend, rpc::types::eth::Block};
+use alloy::{
+    providers::Provider,
+    pubsub::PubSubFrontend,
+    rpc::types::{eth::Block, BlockTransactionsKind},
+};
 use async_trait::async_trait;
 use futures_util::StreamExt;
 use tracing::{error, warn};
@@ -39,11 +43,11 @@ impl Collector<Block> for FullBlockCollector<PubSubFrontend> {
         let mut attempts = 0;
 
         let stream = async_stream::stream! {
-            while let Some(block) = stream.next().await {
-                let block_number = block.header.number.unwrap();
+            while let Some(header) = stream.next().await {
+                let block_number = header.number;
 
                 loop {
-                    match self.provider.get_block_by_number(block_number.into(), true).await {
+                    match self.provider.get_block_by_number(block_number.into(), BlockTransactionsKind::Full).await {
                         Ok(Some(block)) => {
                             yield block;
                         }
