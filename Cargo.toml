@@ -11,7 +11,7 @@ async-trait = "0.1"
 eyre = "0.6"
 futures = "0.3"
 futures-util = "0.3"
-reqwest = { version = "0.12", features = ["json", "rustls-tls"] }
+reqwest = { version = "0.12", features = ["json"] }
 serde_json = "1"
 tokio = "1"
 tracing = { version = "0.1.37", features = ["log"] }
@@ -26,4 +26,4 @@ default = ["eth"]
 
 #eth
 eth = ["alloy"]
-reqwest-rustls-tls = ["alloy?/reqwest-rustls-tls"]
+rustls-tls = ["alloy?/reqwest-rustls-tls", "reqwest/rustls-tls"]
