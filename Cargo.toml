@@ -26,3 +26,4 @@ default = ["eth"]
 
 #eth
 eth = ["alloy"]
+reqwest-rustls-tls = ["alloy?/reqwest-rustls-tls"]
