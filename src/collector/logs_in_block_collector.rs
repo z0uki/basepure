@@ -3,9 +3,8 @@ use std::sync::Arc;
 use alloy::{
     primitives::B256,
     providers::Provider,
-    pubsub::PubSubFrontend,
     rpc::types::{
-        eth::{Block, Filter, Log},
+        eth::{Filter, Log},
         Header,
     },
 };
@@ -15,12 +14,12 @@ use futures::StreamExt;
 use crate::types::{Collector, CollectorStream};
 
 pub struct LogsInBlockCollector {
-    provider: Arc<dyn Provider<PubSubFrontend>>,
+    provider: Arc<dyn Provider>,
     filter: Filter,
 }
 
 impl LogsInBlockCollector {
-    pub fn new(provider: Arc<dyn Provider<PubSubFrontend>>, filter: Filter) -> Self {
+    pub fn new(provider: Arc<dyn Provider>, filter: Filter) -> Self {
         Self { provider, filter }
     }
 
